@@ -9,7 +9,8 @@ public class AutoFactory extends DefaultTask {
 
 public class DimenFactory extends DefaultTask {
     @Input
-    int[] dimens = [320, 360, 384, 411, 450, 480, 540, 570, 600, 660, 720, 760, 800, 1024, 1080, 1280, 1440, 2560, 3840];
+    int[] dimens = [320, 360, 384, 411, 450, 480, 540, 570, 600, 660, 720, 768, 800, 960, 1024, 1080, 1280, 1366, 1440, 1680
+                    , 1920, 2048, 2560, 3840];
     @Input
     int fromDimen = 360;
     @Input
@@ -60,7 +61,8 @@ public class DimenFactory extends DefaultTask {
 task createDimen(type: DimenFactory) {}
 
 createDimen {
-    dimens = [320, 360, 384, 411, 450, 480, 540, 570, 600, 660, 720, 760, 800, 1024, 1080, 1280, 1440, 2560, 3840];
+    dimens = [320, 360, 384, 411, 450, 480, 540, 570, 600, 660, 720, 768, 800, 960, 1024, 1080, 1280, 1366, 1440, 1680
+              , 1920, 2048, 2560, 3840];
     fromDimen = 360
     positiveMaxDP = 600 //change to 600 or any other value if needed
     positiveMaxSP = 60 //change to 600 or any other value if needed
