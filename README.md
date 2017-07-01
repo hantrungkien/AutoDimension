@@ -17,7 +17,7 @@ allprojects {
 ````
 module/build.gradle
 ````gradle
-compile 'com.github.hantrungkien:AutoDimension:1.0.0'
+compile 'com.github.hantrungkien:AutoDimension:1.0.1'
 ````
 
 #### How to use:
