@@ -1,0 +1,68 @@
+/**
+ * Created by kienht - 1.7.2017
+ */
+//./gradlew createDimen
+public class AutoFactory extends DefaultTask {
+    @TaskAction
+    def create() {}
+}
+
+public class DimenFactory extends DefaultTask {
+    @Input
+    int[] dimens = [320, 360, 384, 411, 450, 480, 540, 570, 600, 660, 720, 760, 800, 1024, 1080, 1280, 1440, 2560, 3840];
+    @Input
+    int fromDimen = 360;
+    @Input
+    double positiveMaxDP = 600
+    @Input
+    double positiveMaxSP = 60
+    @Input
+    double negativeMaxDP = 100
+
+    String resFolder = project.getProjectDir().getPath() + "/src/main/res/"
+
+    @TaskAction
+    def create() {
+        autoCreateDimen();
+    }
+
+    def autoCreateDimen() {
+        for (int dimen : dimens) {
+            String folder = resFolder + "values-sw" + (int) dimen + "dp";
+            String fileName = folder + "/auto_dimens.xml";
+            new File(folder).mkdir();
+            new File(fileName).createNewFile();
+            PrintWriter printWriter = new PrintWriter(fileName);
+            printWriter.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+            printWriter.println("<resources>");
+            for (int i = 1; i <= positiveMaxDP; i++) {
+                double ratio = i / fromDimen;
+                double sdp = ratio * dimen;
+                printWriter.printf("\t<dimen name=\"_%ddp\">%.2fdp</dimen>\r\n", i, sdp);
+            }
+            for (int i = 1; i <= positiveMaxSP; i++) {
+                double ratio = i / fromDimen;
+                double sdp = ratio * dimen;
+                printWriter.printf("\t<dimen name=\"_%dsp\">%.2fsp</dimen>\r\n", i, sdp);
+            }
+            for (int i = 1; i <= negativeMaxDP; i++) {
+                double ratio = i / fromDimen;
+                double sdp = ratio * dimen;
+                printWriter.printf("\t<dimen name=\"minus_%ddp\">%.2fdp</dimen>\r\n", i, -sdp);
+            }
+
+            printWriter.println("</resources>");
+            printWriter.close();
+        }
+    }
+}
+
+task createDimen(type: DimenFactory) {}
+
+createDimen {
+    dimens = [320, 360, 384, 411, 450, 480, 540, 570, 600, 660, 720, 760, 800, 1024, 1080, 1280, 1440, 2560, 3840];
+    fromDimen = 360
+    positiveMaxDP = 600 //change to 600 or any other value if needed
+    positiveMaxSP = 60 //change to 600 or any other value if needed
+    negativeMaxDP = 100 //change to 600 or any other value if needed
+}
