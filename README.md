@@ -28,7 +28,7 @@ compile 'com.github.hantrungkien:AutoDimension:1.0.3'
  android:layout_width="match_parent"
  android:layout_height="match_parent"
  android:layout_margin="@dimen/_1dp"/>
-
+````
 
 ### Contribution
 
