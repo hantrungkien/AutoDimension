@@ -32,14 +32,14 @@ pipeline {
             }
     post {
         success {
-            echo 'Passed => ...'
+            echo "Passed job: ${env.JOB_NAME}\nbuild: ${env.BUILD_ID} - ${env.BUILD_URL}\nblue ocean: ${env.RUN_DISPLAY_URL}"
             mail to : 'kienhantrung@gmail.com',
             from: 'mr_ti3mchich@yahoo.com',
             subject: "Jenkins",
             body: "Kien oi duoc roiii"
         }
         failure {
-            echo 'Failed => ...'
+            echo "Failed job: ${env.JOB_NAME}\nbuild: ${env.BUILD_ID} - ${env.BUILD_URL}\nblue ocean: ${env.RUN_DISPLAY_URL}"
             mail to : 'kienhantrung@gmail.com',
             from: 'mr_ti3mchich@yahoo.com',
             subject: "Jenkins",
