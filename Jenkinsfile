@@ -4,12 +4,8 @@ pipeline {
                 stage('Build Assets') {
                     agent any
                             steps {
-                                step {
-                                    echo 'Building Assets...'
-                                }
-                                step {
-                                    sh './gradlew assembleDebug'
-                                }
+                                echo 'Building Assets...'
+                                sh './gradlew assembleDebug'
                             }
                 }
                 stage('Test') {
