@@ -2,24 +2,23 @@ def err = null
 try {
     node {
         stage('Clean Build') {
-            step {
+            dir("android") {
                 sh './gradlew clean'
             }
         }
 
         stage('ktlint') {
-            step {
+            dir("android") {
                 sh './gradlew ktlintCheck'
             }
         }
 
         stage('Build release') {
-            step {
+            dir("android") {
                 sh './gradlew uploadDeployGateRelease'
             }
         }
     }
-
 } catch (caughtError) {
     err = caughtError
     currentBuild.result = "FAILURE"
