@@ -2,23 +2,23 @@
  * Created by kienht - 1.7.2017
  */
 //./gradlew createDimen
-public class AutoFactory extends DefaultTask {
+class AutoFactory extends DefaultTask {
     @TaskAction
     def create() {}
 }
 
-public class DimenFactory extends DefaultTask {
+class DimenFactory extends DefaultTask {
+
     @Input
-    int[] dimens = [240, 320, 360, 384, 400, 411, 420, 432, 450, 480, 540, 560, 570, 600, 640, 660, 720, 750, 768, 800, 840, 854,
-                    960, 1024, 1080, 1125, 1136, 1280, 1334, 1366, 1440, 1536, 1600, 1680, 1920, 2048, 2436, 2560, 3840];
+    int[] dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 886, 960, 1024, 1080, 1280, 1366, 1440, 1920, 2560, 3840];
     @Input
     int fromDimen = 360;
     @Input
-    double positiveMaxDP = 1200
+    double positiveMaxDP = 300
     @Input
-    double positiveMaxSP = 200
+    double negativeMaxDP = 100
     @Input
-    double negativeMaxDP = 200
+    double positiveMaxSP = 60
 
     String resFolder = project.getProjectDir().getPath() + "/src/main/res/"
 
@@ -29,29 +29,38 @@ public class DimenFactory extends DefaultTask {
 
     def autoCreateDimen() {
         for (int dimen : dimens) {
-            String folder = resFolder + "values-sw" + (int) dimen + "dp";
+            String folderName = "values-sw" + (int) dimen + "dp";
+            String folder = resFolder + folderName
             String fileName = folder + "/auto_dimens.xml";
             new File(folder).mkdir();
             new File(fileName).createNewFile();
             PrintWriter printWriter = new PrintWriter(fileName);
             printWriter.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             printWriter.println("<resources>");
+            String dimenFileName = "\t<string name=\"dimenFileName\">" + folderName + "</string>\r"
+            printWriter.println(dimenFileName);
+
             for (int i = 1; i <= positiveMaxDP; i++) {
                 double ratio = i / fromDimen;
-                double sdp = ratio * dimen;
-                double haftSdp = (1 / fromDimen) * dimen * 0.5d;
-                printWriter.printf("\t<dimen name=\"_%ddp\">%.2fdp</dimen>\r\n", i, sdp);
-                printWriter.printf("\t<dimen name=\"_%d_5dp\">%.2fdp</dimen>\r\n", i, sdp + haftSdp);
+                double dp = ratio * dimen;
+                double haftDp = dp * 0.5d;
+                if (i == 1) {
+                    printWriter.printf("\t<dimen name=\"_0_5dp\">%.2fdp</dimen>\r\n", haftDp);
+                }
+                printWriter.printf("\t<dimen name=\"_%ddp\">%.2fdp</dimen>\r\n", i, dp);
+                printWriter.printf("\t<dimen name=\"_%d_5dp\">%.2fdp</dimen>\r\n", i, dp + haftDp);
             }
-            for (int i = 1; i <= positiveMaxSP; i++) {
-                double ratio = i / fromDimen;
-                double sdp = ratio * dimen;
-                printWriter.printf("\t<dimen name=\"_%dsp\">%.2fsp</dimen>\r\n", i, sdp);
-            }
+
             for (int i = 1; i <= negativeMaxDP; i++) {
                 double ratio = i / fromDimen;
-                double sdp = ratio * dimen;
-                printWriter.printf("\t<dimen name=\"minus_%ddp\">%.2fdp</dimen>\r\n", i, -sdp);
+                double dp = ratio * dimen;
+                printWriter.printf("\t<dimen name=\"minus_%ddp\">%.2fdp</dimen>\r\n", i, -dp);
+            }
+
+            for (int i = 1; i <= positiveMaxSP; i++) {
+                double ratio = i / fromDimen;
+                double sp = ratio * dimen;
+                printWriter.printf("\t<dimen name=\"_%dsp\">%.2fsp</dimen>\r\n", i, sp);
             }
 
             printWriter.println("</resources>");
@@ -63,10 +72,9 @@ public class DimenFactory extends DefaultTask {
 task createDimen(type: DimenFactory) {}
 
 createDimen {
-    dimens = [240, 320, 360, 384, 400, 411, 420, 432, 450, 480, 540, 560, 570, 600, 640, 660, 720, 750, 768, 800, 840, 854,
-              960, 1024, 1080, 1125, 1136, 1280, 1334, 1366, 1440, 1536, 1600, 1680, 1920, 2048, 2436, 2560, 3840];
+    dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 886, 960, 1024, 1080, 1280, 1366, 1440, 1920, 2560, 3840];
     fromDimen = 360
-    positiveMaxDP = 1200 //change to 600 or any other value if needed
-    positiveMaxSP = 200 //change to 600 or any other value if needed
-    negativeMaxDP = 200 //change to 600 or any other value if needed
+    positiveMaxDP = 300
+    negativeMaxDP = 100
+    positiveMaxSP = 60
 }
