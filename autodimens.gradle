@@ -1,22 +1,22 @@
 /**
  * Created by kienht - 1.7.2017
  */
-//./gradlew createDimen
+//./gradlew createDimension
 class AutoFactory extends DefaultTask {
     @TaskAction
     def create() {}
 }
 
-class DimenFactory extends DefaultTask {
+class DimensionFactory extends DefaultTask {
 
     @Input
     int[] dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 886, 960, 1024, 1080, 1280, 1366, 1440, 1920, 2560, 3840];
     @Input
-    int fromDimen = 360;
+    int fromDimension = 360;
     @Input
-    double positiveMaxDP = 300
+    double positiveMaxDP = 600
     @Input
-    double negativeMaxDP = 100
+    double negativeMaxDP = 600
     @Input
     double positiveMaxSP = 60
 
@@ -40,26 +40,25 @@ class DimenFactory extends DefaultTask {
             String dimenFileName = "\t<string name=\"dimenFileName\">" + folderName + "</string>\r"
             printWriter.println(dimenFileName);
 
+            double ratio = dimen / fromDimension;
+            double haftDp = ratio * 0.5;
+
+            printWriter.printf("\t<dimen name=\"_0_5dp\">%.2fdp</dimen>\r\n", haftDp);
             for (int i = 1; i <= positiveMaxDP; i++) {
-                double ratio = i / fromDimen;
-                double dp = ratio * dimen;
-                double haftDp = dp * 0.5d;
-                if (i == 1) {
-                    printWriter.printf("\t<dimen name=\"_0_5dp\">%.2fdp</dimen>\r\n", haftDp);
-                }
+                double dp = ratio * i;
                 printWriter.printf("\t<dimen name=\"_%ddp\">%.2fdp</dimen>\r\n", i, dp);
                 printWriter.printf("\t<dimen name=\"_%d_5dp\">%.2fdp</dimen>\r\n", i, dp + haftDp);
             }
 
+            printWriter.printf("\t<dimen name=\"minus_0_5dp\">%.2fdp</dimen>\r\n", -haftDp);
             for (int i = 1; i <= negativeMaxDP; i++) {
-                double ratio = i / fromDimen;
-                double dp = ratio * dimen;
+                double dp = ratio * i;
                 printWriter.printf("\t<dimen name=\"minus_%ddp\">%.2fdp</dimen>\r\n", i, -dp);
+                printWriter.printf("\t<dimen name=\"minus_%d_5dp\">%.2fdp</dimen>\r\n", i, -dp - haftDp);
             }
 
             for (int i = 1; i <= positiveMaxSP; i++) {
-                double ratio = i / fromDimen;
-                double sp = ratio * dimen;
+                double sp = ratio * i;
                 printWriter.printf("\t<dimen name=\"_%dsp\">%.2fsp</dimen>\r\n", i, sp);
             }
 
@@ -69,12 +68,12 @@ class DimenFactory extends DefaultTask {
     }
 }
 
-task createDimen(type: DimenFactory) {}
+task createDimension(type: DimensionFactory) {}
 
-createDimen {
+createDimension {
     dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 886, 960, 1024, 1080, 1280, 1366, 1440, 1920, 2560, 3840];
-    fromDimen = 360
-    positiveMaxDP = 300
-    negativeMaxDP = 100
+    fromDimension = 360
+    positiveMaxDP = 600
+    negativeMaxDP = 600
     positiveMaxSP = 60
 }
