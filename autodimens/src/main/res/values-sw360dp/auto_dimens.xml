@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="dimenFileName">values-default</string>
+	<string name="dimenFileName">values-sw360dp</string>
 	<dimen name="_0_5dp">0.50dp</dimen>
 	<dimen name="_1dp">1.00dp</dimen>
 	<dimen name="_1_5dp">1.50dp</dimen>

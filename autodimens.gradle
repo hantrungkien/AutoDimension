@@ -10,7 +10,7 @@ class AutoFactory extends DefaultTask {
 class DimensionFactory extends DefaultTask {
 
     @Input
-    int[] dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 840, 886, 960, 1024, 1080, 1280, 1366, 1440, 1600, 1920, 2560, 3840];
+    int[] dimens = [0, 320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 840, 886, 960, 1024, 1080, 1280, 1366, 1440, 1600, 1920, 2560, 3840];
     @Input
     int fromDimension = 360;
     @Input
@@ -31,7 +31,8 @@ class DimensionFactory extends DefaultTask {
         for (int dimen : dimens) {
             String folderName = "";
             String dimenFileName = "";
-            if (dimen == fromDimension) {
+            if (dimen == 0) {
+                dimen = fromDimension
                 folderName = "values"
                 dimenFileName = "\t<string name=\"dimenFileName\">values-default</string>\r"
             } else {
@@ -78,7 +79,7 @@ class DimensionFactory extends DefaultTask {
 task createDimension(type: DimensionFactory) {}
 
 createDimension {
-    dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 840, 886, 960, 1024, 1080, 1280, 1366, 1440, 1600, 1920, 2560, 3840];
+    dimens = [0, 320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 840, 886, 960, 1024, 1080, 1280, 1366, 1440, 1600, 1920, 2560, 3840];
     fromDimension = 360
     positiveMaxDP = 600
     negativeMaxDP = 600
