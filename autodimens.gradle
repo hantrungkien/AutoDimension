@@ -10,7 +10,7 @@ class AutoFactory extends DefaultTask {
 class DimensionFactory extends DefaultTask {
 
     @Input
-    int[] dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 886, 960, 1024, 1080, 1280, 1366, 1440, 1920, 2560, 3840];
+    int[] dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 840, 886, 960, 1024, 1080, 1280, 1366, 1440, 1600, 1920, 2560, 3840];
     @Input
     int fromDimension = 360;
     @Input
@@ -29,7 +29,15 @@ class DimensionFactory extends DefaultTask {
 
     def autoCreateDimen() {
         for (int dimen : dimens) {
-            String folderName = "values-sw" + (int) dimen + "dp";
+            String folderName = "";
+            String dimenFileName = "";
+            if (dimen == fromDimension) {
+                folderName = "values"
+                dimenFileName = "\t<string name=\"dimenFileName\">values-default</string>\r"
+            } else {
+                folderName = "values-sw" + (int) dimen + "dp";
+                dimenFileName = "\t<string name=\"dimenFileName\">" + folderName + "</string>\r"
+            }
             String folder = resFolder + folderName
             String fileName = folder + "/auto_dimens.xml";
             new File(folder).mkdir();
@@ -37,7 +45,6 @@ class DimensionFactory extends DefaultTask {
             PrintWriter printWriter = new PrintWriter(fileName);
             printWriter.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             printWriter.println("<resources>");
-            String dimenFileName = "\t<string name=\"dimenFileName\">" + folderName + "</string>\r"
             printWriter.println(dimenFileName);
 
             double ratio = dimen / fromDimension;
@@ -71,7 +78,7 @@ class DimensionFactory extends DefaultTask {
 task createDimension(type: DimensionFactory) {}
 
 createDimension {
-    dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 886, 960, 1024, 1080, 1280, 1366, 1440, 1920, 2560, 3840];
+    dimens = [320, 360, 384, 390, 400, 411, 420, 433, 450, 480, 533, 540, 561, 600, 640, 681, 720, 768, 800, 840, 886, 960, 1024, 1080, 1280, 1366, 1440, 1600, 1920, 2560, 3840];
     fromDimension = 360
     positiveMaxDP = 600
     negativeMaxDP = 600
